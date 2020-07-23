@@ -92,9 +92,13 @@ static ViewController * instance = nil;
        
     lua_pushcfunction(luaState, freeObjects);
     lua_setglobal(luaState, "freeObjects");
-       
+    
+    lua_pushcfunction(luaState, changeColor);
+    lua_setglobal(luaState, "changeColor");
+    
     lua_getglobal(luaState, "mainViewDidLoad");
-    lua_pcall(luaState, 0, 0, 0);
+    lua_pushlightuserdata(luaState, (__bridge void *)(instance.view));
+    lua_pcall(luaState, 1, 0, 0);
     
     for (UIView * view in self.view.subviews) {
         NSLog(@"--------------%ld",(long)view.tag);
@@ -126,6 +130,15 @@ int normalView(lua_State *state){
 //    [instance.view addSubview:view];
     return 1;
     
+}
+
+static int changeColor(lua_State *state){
+    if (lua_gettop(state) > 0){
+        UIView *view = (__bridge UIView *)(lua_topointer(state, 1));
+        view.backgroundColor = [UIColor orangeColor];
+        NSLog(@"%ld",(long)view.tag);
+    }
+    return 0;
 }
 
 static int addSubView(lua_State *state){

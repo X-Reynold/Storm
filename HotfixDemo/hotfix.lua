@@ -3,13 +3,15 @@ version="v1.0.01";
 
 --local pageSetting =
 
-function mainViewDidLoad() -- 方法绑定 
+function mainViewDidLoad(vcView) -- 方法绑定 
+
+	changeColor(vcView)
 
 	print("view did load")
 
     local view = normalView("bg:blue")
     -- local view = normalView("bg:yellow")
-    view.tag=20
+    -- view.tag=20
     addSubView(view) 
     -- free(view)
     freeObjects() -- 释放内存
